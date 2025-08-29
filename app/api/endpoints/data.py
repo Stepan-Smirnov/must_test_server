@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
@@ -5,6 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_async_session
 from app.schemes.data import CreateData
+
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -22,4 +26,8 @@ async def create_data(
         - **created_at**: (datetime) текущая дата и время полученных данных
         - **sequence_number**: (int) порядковый номер, положительное число
     """""
+    try:
+        x = 1 / 0
+    except Exception:
+        logger.exception(msg="Ошибка")
 
