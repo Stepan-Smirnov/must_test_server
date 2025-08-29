@@ -48,7 +48,6 @@ async def get_data(
         ] = MAX_ITEMS_PAGE
 ):
     try:
-        await data_crud.get_count(session=session)
         data_list = await data_crud.get_all(
             session=session, offset=(page - 1) * per_page, limit=per_page
         )
