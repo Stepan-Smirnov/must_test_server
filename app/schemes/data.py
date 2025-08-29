@@ -44,3 +44,12 @@ class ReadData(BaseModel):
     text: str
     created_at: datetime
     sequence_number: int
+
+
+class PaginateData(BaseModel):
+
+    data: list[ReadData]
+    current_page: int
+    per_page: int
+    total_items: int
+    total_pages: int

@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud import data_crud
 from app.db import get_async_session
-from app.schemes.data import CreateData, ReadData
+from app.schemes.data import CreateData, ReadData, PaginateData
 from app.exception import ServerError
 from constants import EXC_LOG_ERROR, MIN_NUMBER_PAGE, MAX_ITEMS_PAGE
 
@@ -36,7 +36,7 @@ async def create_data(
 @router.get(
     path='/',
     summary="Получение данных",
-    response_model=list[ReadData]
+    response_model=PaginateData
 )
 async def get_data(
         session: Annotated[AsyncSession, Depends(get_async_session)],
@@ -48,8 +48,20 @@ async def get_data(
         ] = MAX_ITEMS_PAGE
 ):
     try:
-        return await data_crud.get_all(
+        await data_crud.get_count(session=session)
+        data_list = await data_crud.get_all(
             session=session, offset=(page - 1) * per_page, limit=per_page
+        )
+        total_items = await data_crud.get_count(session=session)
+        total_pages = (total_items + per_page - 1) // per_page
+        return PaginateData(
+            data=[ReadData.model_validate(
+                data, from_attributes=True
+            ) for data in data_list],
+            current_page=page,
+            per_page=per_page,
+            total_items=total_items,
+            total_pages=total_pages
         )
     except Exception:
         logger.exception(msg=EXC_LOG_ERROR)

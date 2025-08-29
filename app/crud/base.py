@@ -1,6 +1,7 @@
 import logging
+from typing import Any
 
-from sqlalchemy import select, desc
+from sqlalchemy import select, desc, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.exception import ServerError
@@ -21,7 +22,7 @@ class CrudBase[T]:
             offset: int,
             sort_by: str = "id",
             sort_desc: bool = False,
-            **param
+            **param: dict[str, Any]
             
     ) -> list[T]:
 
@@ -52,3 +53,9 @@ class CrudBase[T]:
             await session.rollback()
             logger.exception(msg=EXC_LOG_ERROR)
             raise ServerError
+
+    async def get_count(self, session: AsyncSession) -> int:
+
+        """Общее кол-во записей """
+
+        return await session.scalar(select(func.count(self.__model.id)))
