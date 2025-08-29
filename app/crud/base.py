@@ -11,21 +11,18 @@ logger = logging.getLogger(__name__)
 
 
 class CrudBase[T]:
-
     def __init__(self, model):
         self.__model = model
 
     async def get_all(
-            self,
-            session: AsyncSession,
-            limit: int,
-            offset: int,
-            sort_by: str = "id",
-            sort_desc: bool = False,
-            **param: dict[str, Any]
-            
+        self,
+        session: AsyncSession,
+        limit: int,
+        offset: int,
+        sort_by: str = "id",
+        sort_desc: bool = False,
+        **param: dict[str, Any],
     ) -> list[T]:
-
         """Возвращаем список объектов по заданным параметрам"""
 
         sort_obj = getattr(self.__model, sort_by)
@@ -34,16 +31,19 @@ class CrudBase[T]:
             sort_obj = desc(sort_obj)
 
         query = (
-            select(self.__model).filter_by(**param).order_by(sort_obj)
-            .offset(offset).limit(limit)
+            select(self.__model)
+            .filter_by(**param)
+            .order_by(sort_obj)
+            .offset(offset)
+            .limit(limit)
         )
 
         result = await session.scalars(query)
         return result.all()
 
     async def create(self, obj_in, session: AsyncSession) -> T:
-
         """Создаем объект на основе Pydantic схемы"""
+
         try:
             obj = self.__model(**obj_in.dict())
             session.add(obj)
@@ -55,7 +55,6 @@ class CrudBase[T]:
             raise ServerError
 
     async def get_count(self, session: AsyncSession) -> int:
-
-        """Общее кол-во записей """
+        """Общее кол-во записей"""
 
         return await session.scalar(select(func.count(self.__model.id)))
