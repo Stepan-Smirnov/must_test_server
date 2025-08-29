@@ -1,6 +1,6 @@
 import logging
 
-from sqlalchemy import select
+from sqlalchemy import select, desc
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.exception import ServerError
@@ -9,7 +9,7 @@ from constants import EXC_LOG_ERROR
 logger = logging.getLogger(__name__)
 
 
-class CrudBase:
+class CrudBase[T]:
 
     def __init__(self, model):
         self.__model = model
@@ -17,20 +17,30 @@ class CrudBase:
     async def get_all(
             self,
             session: AsyncSession,
+            limit: int,
+            offset: int,
             sort_by: str = "id",
+            sort_desc: bool = False,
             **param
-    ):
+            
+    ) -> list[T]:
 
         """Возвращаем список объектов по заданным параметрам"""
 
-        query = select(self.__model).filter_by(**param).order_by(
-            getattr(self.__model, sort_by)
+        sort_obj = getattr(self.__model, sort_by)
+
+        if sort_desc:
+            sort_obj = desc(sort_obj)
+
+        query = (
+            select(self.__model).filter_by(**param).order_by(sort_obj)
+            .offset(offset).limit(limit)
         )
 
         result = await session.scalars(query)
         return result.all()
 
-    async def create(self, obj_in, session: AsyncSession):
+    async def create(self, obj_in, session: AsyncSession) -> T:
 
         """Создаем объект на основе Pydantic схемы"""
         try:
