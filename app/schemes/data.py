@@ -7,14 +7,17 @@ from pydantic import (
 )
 
 from app.exception import TextSpace
+from constants import MIN_TEXT_LENGTH, MAX_TEXT_LENGTH
 
 
 class CreateData(BaseModel):
 
     """Валидация входных данных"""
 
-    text: Annotated[str, Field(min_length=1)]
-    created_at: Annotated[datetime, AwareDatetime(), PastDatetime()]
+    text: Annotated[
+        str, Field(min_length=MIN_TEXT_LENGTH, max_length=MAX_TEXT_LENGTH)
+    ]
+    created_at: Annotated[datetime, AwareDatetime, PastDatetime]
     sequence_number: PositiveInt
 
     @field_validator('text', check_fields=False)
@@ -22,10 +25,3 @@ class CreateData(BaseModel):
         if value.isspace():
             raise TextSpace
         return value
-
-
-class ReadData(CreateData):
-
-    """Валидация данных при отправке"""
-
-    id: PositiveInt

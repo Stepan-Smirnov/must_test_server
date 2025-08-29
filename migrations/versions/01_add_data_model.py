@@ -2,7 +2,7 @@
 
 Revision ID: 01
 Revises: 
-Create Date: 2025-08-29 07:46:59.999011
+Create Date: 2025-08-29 09:32:12.465456
 
 """
 from typing import Sequence, Union
@@ -24,7 +24,7 @@ def upgrade() -> None:
     op.create_table('data',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('text', sa.String(length=32), nullable=False),
-    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.Column('sequence_number', sa.BigInteger(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )

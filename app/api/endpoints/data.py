@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_async_session
-from app.schemes.data import CreateData, ReadData
+from app.schemes.data import CreateData
 
 router = APIRouter()
 
@@ -12,7 +12,6 @@ router = APIRouter()
 @router.post(
     path='/',
     summary='Сохранение данных',
-    response_model=ReadData
 )
 async def create_data(
         session: Annotated[AsyncSession, Depends(get_async_session)],

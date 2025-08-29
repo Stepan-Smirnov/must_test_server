@@ -5,9 +5,7 @@ from constants import DATABASE_URL
 
 Base = declarative_base()
 
-engine = create_async_engine(
-    url=DATABASE_URL, pool_size=50, max_overflow=150
-)
+engine = create_async_engine(url=DATABASE_URL)
 
 async_session_maker = sessionmaker(
     bind=engine, class_=AsyncSession, expire_on_commit=False
