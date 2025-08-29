@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_async_session
 from app.schemes.data import CreateData
+from app.crud import data_crud
 
 
 logger = logging.getLogger(__name__)
@@ -26,8 +27,5 @@ async def create_data(
         - **created_at**: (datetime) текущая дата и время полученных данных
         - **sequence_number**: (int) порядковый номер, положительное число
     """""
-    try:
-        x = 1 / 0
-    except Exception:
-        logger.exception(msg="Ошибка")
+    return await data_crud.create(obj_in=data, session=session)
 

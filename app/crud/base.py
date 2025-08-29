@@ -19,12 +19,8 @@ class CrudBase:
     async def create(self, obj_in, session: AsyncSession):
 
         """Создаем объект на основе Pydantic схемы"""
-        try:
-            obj = self.__model(**obj_in.dict())
-            session.add(obj)
-            await session.commit()
-            await session.refresh(obj)
-            return obj
-        except Exception:
-            await session.rollback()
-            raise ServerError
+        obj = self.__model(**obj_in.dict())
+        session.add(obj)
+        await session.commit()
+        await session.refresh(obj)
+        return obj
