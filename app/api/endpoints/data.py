@@ -18,9 +18,8 @@ async def create_data(
         data: CreateData
 ):
     """
-        - **text**: текст от 1 символа, без пробелов
-        - **created_at**: дата и время полученных данных
-        - **sequence_number**: порядковый номер, положительное число
+        - **text**: (str) текст от 1 символа до 32
+        - **created_at**: (datetime) текущая дата и время полученных данных
+        - **sequence_number**: (int) порядковый номер, положительное число
     """""
 
-    print(data.created_at)
