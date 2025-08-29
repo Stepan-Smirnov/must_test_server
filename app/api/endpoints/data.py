@@ -6,9 +6,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud import data_crud
 from app.db import get_async_session
-from app.schemes.data import CreateData, ReadData, PaginateData
 from app.exception import ServerError
-from constants import EXC_LOG_ERROR, MIN_NUMBER_PAGE, MAX_ITEMS_PAGE
+from app.schemes.data import CreateData, PaginateData, ReadData
+from constants import EXC_LOG_ERROR, MAX_ITEMS_PAGE, MIN_NUMBER_PAGE
 
 logger = logging.getLogger(__name__)
 

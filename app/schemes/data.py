@@ -1,13 +1,17 @@
-from typing import Annotated
 from datetime import datetime, timezone
+from typing import Annotated
 
 from pydantic import (
-    BaseModel, Field, AwareDatetime, PastDatetime,
-    PositiveInt, field_validator, ConfigDict
+    AwareDatetime,
+    BaseModel,
+    Field,
+    PastDatetime,
+    PositiveInt,
+    field_validator,
 )
 
-from app.exception import TextSpace, BadDatetime
-from constants import MIN_TEXT_LENGTH, MAX_TEXT_LENGTH
+from app.exception import BadDatetime, TextSpace
+from constants import MAX_TEXT_LENGTH, MIN_TEXT_LENGTH
 
 
 class CreateData(BaseModel):
