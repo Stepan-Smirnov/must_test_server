@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from pydantic import (
     BaseModel, Field, AwareDatetime, PastDatetime,
-    PositiveInt, field_validator
+    PositiveInt, field_validator, ConfigDict
 )
 
 from app.exception import TextSpace, BadDatetime
@@ -36,6 +36,11 @@ class CreateData(BaseModel):
         return value
 
 
-class ReadData(CreateData):
+class ReadData(BaseModel):
+
+    """Валидация входных данных"""
 
     id: int
+    text: str
+    created_at: datetime
+    sequence_number: int

@@ -1,7 +1,7 @@
 import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_async_session
@@ -17,7 +17,7 @@ router = APIRouter()
 @router.post(
     path='/',
     summary='Сохранение данных',
-    response_model=ReadData
+    response_model=ReadData,
 )
 async def create_data(
         session: Annotated[AsyncSession, Depends(get_async_session)],
@@ -33,7 +33,8 @@ async def create_data(
 
 @router.get(
     path='/',
-    summary="Получение данных"
+    summary="Получение данных",
+    response_model=list[ReadData]
 )
 async def get_data(
         session: Annotated[AsyncSession, Depends(get_async_session)],
