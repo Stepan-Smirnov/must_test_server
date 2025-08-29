@@ -34,3 +34,8 @@ class CreateData(BaseModel):
         ):
             raise BadDatetime
         return value
+
+
+class ReadData(CreateData):
+
+    id: int

@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import get_async_session
-from app.schemes.data import CreateData
+from app.schemes.data import CreateData, ReadData
 from app.crud import data_crud
 
 
@@ -17,6 +17,7 @@ router = APIRouter()
 @router.post(
     path='/',
     summary='Сохранение данных',
+    response_model=ReadData
 )
 async def create_data(
         session: Annotated[AsyncSession, Depends(get_async_session)],
@@ -29,3 +30,12 @@ async def create_data(
     """""
     return await data_crud.create(obj_in=data, session=session)
 
+
+@router.get(
+    path='/',
+    summary="Получение данных"
+)
+async def get_data(
+        session: Annotated[AsyncSession, Depends(get_async_session)],
+):
+    return await data_crud.get_all(session=session)
