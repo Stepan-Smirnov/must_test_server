@@ -16,36 +16,36 @@ router = APIRouter()
 
 
 @router.post(
-    path='/',
-    summary='Сохранение данных',
+    path="/",
+    summary="Сохранение данных",
     response_model=ReadData
 )
 async def create_data(
-        session: Annotated[AsyncSession, Depends(get_async_session)],
-        data: CreateData
+    session: Annotated[AsyncSession, Depends(get_async_session)],
+    data: CreateData
 ):
     """
-        - **text**: (str) текст от 1 символа до 32
-        - **created_at**: (datetime) текущая дата и время полученных данных
-        - **sequence_number**: (int) порядковый номер, положительное число
+    - **text**: (str) текст от 1 символа до 32
+    - **created_at**: (datetime) текущая дата и время полученных данных
+    - **sequence_number**: (int) порядковый номер, положительное число
     """""
 
     return await data_crud.create(obj_in=data, session=session)
 
 
 @router.get(
-    path='/',
+    path="/",
     summary="Получение данных",
     response_model=PaginateData
 )
 async def get_data(
-        session: Annotated[AsyncSession, Depends(get_async_session)],
-        page: Annotated[
-            int, Query(ge=1, description="Номер страницы")
-        ] = MIN_NUMBER_PAGE,
-        per_page: Annotated[
-            int, Query(ge=1, le=10, description="Кол-во элементов на странице")
-        ] = MAX_ITEMS_PAGE
+    session: Annotated[AsyncSession, Depends(get_async_session)],
+    page: Annotated[
+        int, Query(ge=1, description="Номер страницы")
+    ] = MIN_NUMBER_PAGE,
+    per_page: Annotated[
+        int, Query(ge=1, le=10, description="Кол-во элементов на странице")
+    ] = MAX_ITEMS_PAGE,
 ):
     try:
         data_list = await data_crud.get_all(
@@ -54,13 +54,14 @@ async def get_data(
         total_items = await data_crud.get_count(session=session)
         total_pages = (total_items + per_page - 1) // per_page
         return PaginateData(
-            data=[ReadData.model_validate(
-                data, from_attributes=True
-            ) for data in data_list],
+            data=[
+                ReadData.model_validate(data, from_attributes=True)
+                for data in data_list
+            ],
             current_page=page,
             per_page=per_page,
             total_items=total_items,
-            total_pages=total_pages
+            total_pages=total_pages,
         )
     except Exception:
         logger.exception(msg=EXC_LOG_ERROR)

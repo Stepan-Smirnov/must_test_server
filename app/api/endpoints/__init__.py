@@ -1,1 +1,1 @@
-from app.api.endpoints.data import router as data_router # noqa
+from app.api.endpoints.data import router as data_router  # noqa
