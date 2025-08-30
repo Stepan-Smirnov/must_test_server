@@ -1,8 +1,8 @@
 from sqlalchemy import BigInteger, DateTime, String
 from sqlalchemy.orm import Mapped, mapped_column
 
+from app.constants import MAX_TEXT_LENGTH
 from app.db import Base
-from constants import MAX_TEXT_LENGTH
 
 
 class Data(Base):

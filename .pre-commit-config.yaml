@@ -5,7 +5,6 @@ repos:
     hooks:
       # Run the linter.
       - id: ruff-check
-        args: [ --diff ]
-      # Run the formatter.
+        args: [ --fix, --show-fixes]
       - id: ruff-format
         args: [ --diff ]

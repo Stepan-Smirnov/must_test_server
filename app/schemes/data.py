@@ -10,14 +10,16 @@ from pydantic import (
     field_validator,
 )
 
+from app.constants import MAX_TEXT_LENGTH, MIN_TEXT_LENGTH
 from app.exception import BadDatetime, TextSpace
-from constants import MAX_TEXT_LENGTH, MIN_TEXT_LENGTH
 
 
 class CreateData(BaseModel):
     """Валидация входных данных"""
 
-    text: Annotated[str, Field(min_length=MIN_TEXT_LENGTH, max_length=MAX_TEXT_LENGTH)]
+    text: Annotated[
+        str, Field(min_length=MIN_TEXT_LENGTH, max_length=MAX_TEXT_LENGTH)
+    ]
     created_at: Annotated[datetime, AwareDatetime, PastDatetime]
     sequence_number: PositiveInt
 

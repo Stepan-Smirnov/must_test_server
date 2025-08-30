@@ -4,8 +4,8 @@ from typing import Any
 from sqlalchemy import desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.constants import EXC_LOG_ERROR
 from app.exception import ServerError
-from constants import EXC_LOG_ERROR
 
 logger = logging.getLogger(__name__)
 
