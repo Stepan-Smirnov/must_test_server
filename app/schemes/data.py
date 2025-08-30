@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+import datetime as dt
+from datetime import datetime
 from typing import Annotated
 
 from pydantic import (
@@ -31,7 +32,7 @@ class CreateData(BaseModel):
 
     @field_validator("created_at", check_fields=False)
     def created_at_validator(cls, value: datetime):
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.now(tz=dt.UTC)
         if value.year < now.year or (
             value.year == now.year and value.month < now.month
         ):
