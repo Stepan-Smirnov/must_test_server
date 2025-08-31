@@ -5,6 +5,7 @@ from typing import Annotated
 from pydantic import (
     AwareDatetime,
     BaseModel,
+    ConfigDict,
     Field,
     PastDatetime,
     PositiveInt,
@@ -38,6 +39,11 @@ class CreateData(BaseModel):
         ):
             raise BadDatetime
         return value
+
+    model_config = ConfigDict(
+        extra="forbid",
+        str_strip_whitespace=True,
+    )
 
 
 class ReadData(BaseModel):
