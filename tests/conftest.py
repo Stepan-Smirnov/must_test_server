@@ -21,7 +21,7 @@ async_session_maker.configure(bind=engine)
 
 
 @pytest.fixture(scope="session", autouse=True)
-async def setup_db():
+async def setup_db() -> None:
     """Create Database"""
 
     async with engine.begin() as conn:
@@ -30,7 +30,7 @@ async def setup_db():
 
 
 @pytest.fixture
-async def session():
+async def session(request) -> AsyncSession:
     """Create async session"""
 
     async with async_session_maker() as async_session:
@@ -41,7 +41,7 @@ async def session():
 
 
 @pytest.fixture
-async def data_instance(session: AsyncSession):
+async def data_instance(session: AsyncSession) -> int:
     """Create data instance for test"""
 
     data_list = [
@@ -59,12 +59,13 @@ async def data_instance(session: AsyncSession):
     await session.commit()
 
 
-@pytest.fixture(scope="session")
-async def client():
+@pytest.fixture(scope="class")
+async def client(request) -> AsyncClient:
     """Create async client"""
 
     async with AsyncClient(
         transport=ASGITransport(app=app),
         base_url="http://testserver",
     ) as client:
-        yield client
+        request.cls.client: AsyncClient = client
+        yield
