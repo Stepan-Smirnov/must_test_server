@@ -7,10 +7,10 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.models import Base
-from app.constants import DATABASE_URL
+from app.config import settings
 
 config = context.config
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
 
 
 if config.config_file_name is not None:

@@ -8,10 +8,15 @@ dependencies = [
     "aiosqlite>=0.21.0",
     "alembic>=1.16.5",
     "fastapi[standard]==0.115.0",
+    "pydantic-settings>=2.10.1",
 ]
 [dependency-groups]
 dev = [
+    "aiosqlite>=0.21.0",
+    "alembic>=1.16.5",
+    "httpx>=0.28.1",
     "pre-commit>=4.3.0",
+    "pydantic-settings>=2.10.1",
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
     "ruff>=0.12.11",
@@ -32,7 +37,6 @@ select = [
     "UP",   # pyupgrade
     "I",    # isort
     "F",    # flake8-pyflakes
-    "C4",   # flake8-comprehensions
     "S",    # flake8-bandit
     "BLE",  # flake8-blind-except
     "T20",  # flake8-print
@@ -62,5 +66,7 @@ indent-style = "space"
 addopts = "-v"
 console_output_style = "count"
 minversion = "6.0"
-pythonpath = "./app"
+pythonpath = ["app", "tests", "."]
 testpaths = "./tests"
+asyncio_mode = "auto"
+filterwarnings = ["ignore::PendingDeprecationWarning"]

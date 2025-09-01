@@ -16,7 +16,7 @@ router = APIRouter()
 
 
 @router.post(
-    path="/",
+    path="",
     summary="Сохранение данных",
     response_model=ReadData,
 )
@@ -34,7 +34,7 @@ async def create_data(
 
 
 @router.get(
-    path="/",
+    path="",
     summary="Получение данных",
     response_model=PaginateData,
 )
