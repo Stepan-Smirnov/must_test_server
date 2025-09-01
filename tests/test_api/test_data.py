@@ -75,7 +75,7 @@ class TestDataEndpoint:
         assert r_page == page
         assert r_per_page == per_page
         assert total_items == data_instance
-        item_offset = (r_page - 1) * per_page
+        item_offset = (r_page - 1) * r_per_page
         assert len(r_data) == min(r_per_page, total_items - item_offset)
 
     @pytest.mark.parametrize(
