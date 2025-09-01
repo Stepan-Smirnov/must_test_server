@@ -23,7 +23,7 @@ class CrudBase[T]:
         sort_desc: bool = False,
         **param: dict[str, Any],
     ) -> list[T]:
-        """Возвращаем список объектов по заданным параметрам"""
+        """Get a list of objects"""
 
         sort_obj = getattr(self.__model, sort_by)
 
@@ -42,7 +42,7 @@ class CrudBase[T]:
         return result.all()
 
     async def create(self, obj_in, session: AsyncSession) -> T:
-        """Создаем объект на основе Pydantic схемы"""
+        """Creating an object based on a Pydantic schema"""
 
         try:
             obj = self.__model(**obj_in.dict())
@@ -55,6 +55,6 @@ class CrudBase[T]:
             raise ServerError
 
     async def get_count(self, session: AsyncSession) -> int:
-        """Общее кол-во записей"""
+        """Get the total number of object"""
 
         return await session.scalar(select(func.count(self.__model.id)))

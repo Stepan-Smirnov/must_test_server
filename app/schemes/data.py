@@ -17,7 +17,7 @@ from app.exception import BadDatetime, TextSpace
 
 
 class CreateData(BaseModel):
-    """Валидация входных данных"""
+    """Validation of input data"""
 
     text: Annotated[
         str, Field(min_length=MIN_TEXT_LENGTH, max_length=MAX_TEXT_LENGTH)
@@ -47,7 +47,7 @@ class CreateData(BaseModel):
 
 
 class ReadData(BaseModel):
-    """Валидация входных данных"""
+    """Validation of returned data"""
 
     id: int
     text: str
@@ -56,7 +56,7 @@ class ReadData(BaseModel):
 
 
 class PaginateData(BaseModel):
-    """Вывод данных с пагинацией"""
+    """Data return with pagination"""
 
     data: list[ReadData]
     current_page: int

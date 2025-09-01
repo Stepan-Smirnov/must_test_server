@@ -1,7 +1,7 @@
 import logging
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.constants import EXC_LOG_ERROR, MAX_ITEMS_PAGE, MIN_NUMBER_PAGE
@@ -17,17 +17,18 @@ router = APIRouter()
 
 @router.post(
     path="",
-    summary="Сохранение данных",
+    summary="Create data",
     response_model=ReadData,
+    status_code=status.HTTP_200_OK,
 )
 async def create_data(
     session: Annotated[AsyncSession, Depends(get_async_session)],
     data: CreateData,
 ):
     """
-    - **text**: (str) текст от 1 символа до 32
-    - **created_at**: (datetime) текущая дата и время полученных данных
-    - **sequence_number**: (int) порядковый номер, положительное число
+    - **text**: (str) text from 1 character to 32 characters
+    - **created_at**: (datetime) current date and time of the received data
+    - **sequence_number**: (int) ordinal number, a positive number
     """
 
     return await data_crud.create(obj_in=data, session=session)
@@ -35,8 +36,9 @@ async def create_data(
 
 @router.get(
     path="",
-    summary="Получение данных",
+    summary="GetData",
     response_model=PaginateData,
+    status_code=status.HTTP_200_OK,
 )
 async def get_data(
     session: Annotated[AsyncSession, Depends(get_async_session)],
@@ -47,6 +49,11 @@ async def get_data(
         int, Query(ge=1, le=10, description="Кол-во элементов на странице")
     ] = MAX_ITEMS_PAGE,
 ):
+    """
+    - **page**: Query (int) - min = 1, default = 1, number of page
+    - **per_page**: Query (int) - min 1, max = 10, default = 10, count object
+    """
+
     try:
         data_list = await data_crud.get_all(
             session=session, offset=(page - 1) * per_page, limit=per_page
