@@ -9,6 +9,7 @@ dependencies = [
     "alembic>=1.16.5",
     "fastapi[standard]==0.115.0",
     "pydantic-settings>=2.10.1",
+    "pyinstaller>=6.15.0",
 ]
 [dependency-groups]
 dev = [
