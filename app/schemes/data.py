@@ -13,7 +13,7 @@ from pydantic import (
 )
 
 from app.constants import MAX_TEXT_LENGTH, MIN_TEXT_LENGTH
-from app.exception import BadDatetime, TextSpace
+from app.exception import BadDatetime
 
 
 class CreateData(BaseModel):
@@ -24,12 +24,6 @@ class CreateData(BaseModel):
     ]
     created_at: Annotated[datetime, AwareDatetime, PastDatetime]
     sequence_number: PositiveInt
-
-    @field_validator("text", check_fields=False)
-    def text_validator(cls, value: str):
-        if value.isspace():
-            raise TextSpace
-        return value
 
     @field_validator("created_at", check_fields=False)
     def created_at_validator(cls, value: datetime):

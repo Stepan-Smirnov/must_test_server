@@ -50,7 +50,7 @@ fixable = [
 
 [tool.ruff.lint.extend-per-file-ignores]
 
-"tests/*.py" = ["S101"]
+"tests/*.py" = ["S101", "DTZ005"]
 
 [tool.ruff.format]
 

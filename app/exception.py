@@ -14,11 +14,6 @@ class ServerError(CustomExceptions):
     detail = "Internal server error."
 
 
-class TextSpace(CustomExceptions):
-    status_code = status.HTTP_400_BAD_REQUEST
-    detail = "The text should not consist of spaces."
-
-
 class BadDatetime(CustomExceptions):
     status_code = status.HTTP_400_BAD_REQUEST
     detail = "An incorrect date is specified"

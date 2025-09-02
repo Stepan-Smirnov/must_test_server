@@ -69,3 +69,14 @@ async def client(request) -> AsyncClient:
     ) as client:
         request.cls.client: AsyncClient = client
         yield
+
+
+@pytest.fixture
+def test_data_obj() -> dict[str, str | int]:
+    """Create test data object"""
+
+    return dict(
+        text="test_string",
+        created_at=str(datetime.now(tz=dt.UTC)),
+        sequence_number=1,
+    )

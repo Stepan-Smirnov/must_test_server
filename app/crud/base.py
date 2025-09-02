@@ -1,6 +1,7 @@
 import logging
 from typing import Any
 
+from pydantic import BaseModel
 from sqlalchemy import desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -41,11 +42,15 @@ class CrudBase[T]:
         result = await session.scalars(query)
         return result.all()
 
-    async def create(self, obj_in, session: AsyncSession) -> T:
+    async def create(
+        self,
+        obj_in: BaseModel,
+        session: AsyncSession,
+    ) -> T:
         """Creating an object based on a Pydantic schema"""
 
         try:
-            obj = self.__model(**obj_in.dict())
+            obj = self.__model(**obj_in.model_dump())
             session.add(obj)
             await session.commit()
             return obj
@@ -54,7 +59,10 @@ class CrudBase[T]:
             logger.exception(msg=EXC_LOG_ERROR)
             raise ServerError
 
-    async def get_count(self, session: AsyncSession) -> int:
+    async def get_count(
+        self,
+        session: AsyncSession,
+    ) -> int:
         """Get the total number of object"""
 
         return await session.scalar(select(func.count(self.__model.id)))
